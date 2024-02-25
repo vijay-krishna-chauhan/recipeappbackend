@@ -3,7 +3,10 @@ const userRoutes=require('./userRoutes')
 const cors=require('cors');
 const app=express();
 require('./db');
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    credentials: true
+}));
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
