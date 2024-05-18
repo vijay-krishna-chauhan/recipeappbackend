@@ -32,12 +32,25 @@ router.post('/auto-login', authUser, async(req, res)=>{
     res.send(req.user);
 })
 
-router.post('/logout', async (req, res)=>{
-    const user=req.user;
-    user.token= '';
-    await user.save();
-    res.status(200).send();
-})
+// router.post('/logout', async (req, res)=>{
+//     const user=req.user;
+//     user.token= '';
+//     await user.save();
+//     res.status(200).send();
+// })
+
+router.post('/logout', authUser, async (req, res) => {
+    try {
+        const user = req.user;
+        user.token = undefined; // Remove the token field completely
+        await user.save();
+        res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).json({ error: "An error occurred during logout" });
+    }
+});
+
 
 router.post('/add-favorites',authUser, async(req, res)=>{
     const {mealId}=req.body;
